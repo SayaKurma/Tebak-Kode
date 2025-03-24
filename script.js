@@ -4,6 +4,8 @@ const maxAttempts = 5;
 
 document.getElementById('submitGuess').addEventListener('click', makeGuess);
 document.getElementById('restart').addEventListener('click', restartGame);
+document.getElementById('infoIcon').addEventListener('click', openModal);
+document.getElementById('closeModal').addEventListener ('click', closeModal);
 
 function generateSecretCode() {
     let code = '';
@@ -27,8 +29,8 @@ function makeGuess() {
     displayGuess(guess, feedback);
 
     if (guess === secretCode) {
-        document.getElementById('result').innerText = 'Selamat! Anda menebak kode dengan benar!';
-        document.getElementById('score').innerText = `Skor Anda: ${calculateScore(attempts)}`;
+        document.getElementById('result').innerText = 'Selamat! Kamu menebak kode dengan benar!';
+        document.getElementById('score').innerText = `Skor Kamu: ${calculateScore(attempts)}`;
         endGame();
     } else if (attempts >= maxAttempts) {
         document.getElementById('result').innerText = `Permainan berakhir! Kode rahasia adalah ${secretCode}.`;
@@ -98,4 +100,19 @@ function restartGame() {
     document.getElementById('submitGuess').disabled = false;
     document.getElementById('restart').style.display = 'none';
     document.getElementById('guessInput').value = '';
+}
+
+function openModal() {
+    document.getElementById('infoModal').style.display = 'block';
+}
+
+function closeModal() {
+    document.getElementById('infoModal').style.display = 'none';
+}
+
+window.onclick = function(event) {
+    const modal = document.getElementById('infoModal');
+    if (event.target === modal) {
+        modal.style.display = 'none';
+    }
 }
