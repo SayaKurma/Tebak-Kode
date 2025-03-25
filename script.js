@@ -225,23 +225,57 @@ function resetGameUI() {
 
 function displayScore(score) {
     const scoreDisplay = document.getElementById('scoreDisplay');
-    scoreDisplay.innerHTML = `
-        <div class="score-wrapper">
+    const scoreElement = document.createElement('div');
+    scoreElement.className = 'score-wrapper animated-score';
+
+    const confettiBackground = document.createElement('div');
+    confettiBackground.className = 'score-confetti-background';
+    for (let i = 0; i < 50; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'score-particle';
+        particle.style.left = `${Math.random() * 100}%`;
+        particle.style.animationDelay = `${Math.random() * 2}s`;
+        particle.style.backgroundColor = getRandomScoreParticleColor();
+        confettiBackground.appendChild(particle);
+    }
+
+    scoreElement.innerHTML = `
+        <div class="score-circle-container">
             <div class="score-circle">
                 <div class="score-text">${score}</div>
+                <div class="score-label">Point</div>
             </div>
-            <div class="score-subtitle">Skor Hebat!</div>
+        </div>
+        <div class="score-subtitle">
+            <span>Keren! Kamu berhasil menebak!</span>
         </div>
     `;
-    scoreDisplay.style.display = 'flex';
+
+    scoreDisplay.innerHTML = '';
+    scoreDisplay.appendChild(confettiBackground);
+    scoreDisplay.appendChild(scoreElement);
+
+    scoreDisplay.offsetWidth;
+
     scoreDisplay.classList.add('show');
 
     setTimeout(() => {
         scoreDisplay.classList.remove('show');
         setTimeout(() => {
-            scoreDisplay.style.display = 'none';
+            scoreDisplay.innerHTML = '';
         }, 500);
     }, 5000);
+}
+
+function getRandomScoreParticleColor() {
+    const colors = [
+        '#3B82F6',   // Blue
+        '#10B981',   // Green
+        '#F43F5E',   // Red
+        '#8B5CF6',   // Purple
+        '#F59E0B'    // Orange
+    ];
+    return colors[Math.floor(Math.random() * colors.length)];
 }
 
 function createConfetti() {
