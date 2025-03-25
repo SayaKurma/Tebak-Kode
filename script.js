@@ -112,7 +112,9 @@ function displayGuess(guess, feedback) {
 
 function handleWin() {
     document.getElementById('result').textContent = 'Selamat! Kamu menebak kode dengan benar!';
-    document.getElementById('score').textContent = `Skor Kamu: ${calculateScore(attempts)}`;
+    const score = calculateScore(attempts);
+    displayScore(score);
+    showConfetti();
     endGame();
 }
 
@@ -201,4 +203,29 @@ function resetGameUI() {
     document.getElementById('score').textContent = '';
     document.getElementById('submitGuess').disabled = false;
     document.getElementById('restart').style.display = 'none';
+}
+
+function displayScore(score) {
+    const scoreDisplay = document.getElementById('scoreDisplay');
+    scoreDisplay.textContent = `Skor Kamu: ${score}`;
+    scoreDisplay.style.display = 'block';
+    setTimeout(() => {
+        scoreDisplay.style.display = 'none';
+    }, 5000);
+}
+
+function showConfetti() {
+    const confettiContainer = document.getElementById('confetti');
+    confettiContainer.style.display = 'block';
+    for (let i = 0; i < 100; i++) {
+        const confettiPiece = document.createElement('div');
+        confettiPiece.className = 'confetti-piece';
+        confettiPiece.style.left = `${Math.random() * 100}vw`;
+        confettiPiece.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+        confettiContainer.appendChild(confettiPiece);
+    }
+    setTimeout(() => {
+        confettiContainer.innerHTML = '';
+        confettiContainer.style.display = 'none';
+    }, 5000);
 }
