@@ -185,3 +185,41 @@ body {
 .close:hover {
     color: #ddd;
 }
+
+.score-display {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 3em;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    display: none;
+}
+
+.confetti {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    display: none;
+}
+
+.confetti-piece {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: #f00;
+    animation: confetti-fall 2s linear infinite;
+}
+
+@keyframes confetti-fall {
+    0% { transform: translateY(0) rotate(0); }
+    100% { transform: translateY(100vh) rotate(360deg); }
+}
