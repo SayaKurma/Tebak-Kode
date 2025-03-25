@@ -19,6 +19,7 @@ function setupEventListeners() {
     const infoIcon = document.getElementById('infoIcon');
     const closeModalButton = document.getElementById('closeModal');
     const menuItems = document.querySelectorAll('.menu-item');
+    const guessInput = document.getElementById('guessInput');
 
     if (submitButton) submitButton.addEventListener('click', handleGuess);
     if (restartButton) restartButton.addEventListener('click', restartGame);
@@ -27,8 +28,19 @@ function setupEventListeners() {
 
     menuItems.forEach(item => item.addEventListener('click', handleInfoMenu));
 
+    guessInput.addEventListener('input', () => {
+        guessInput.value = guessInput.value.replace(/[^0-9]/g, '');
+    });
+
     window.addEventListener('click', (event) => {
         if (event.target === document.getElementById('infoModal')) closeModal();
+    });
+
+    guessInput.addEventListener('keypress', (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            handleGuess();
+        }
     });
 }
 
@@ -56,7 +68,7 @@ function handleGuess() {
 }
 
 function validateGuess(guess) {
-    if (guess.length !== 5 || isNaN(guess)) {
+    if (guess.length !== 5) {
         alert('Masukkan 5 digit angka!');
         return false;
     }
@@ -111,7 +123,10 @@ function displayGuess(guess, feedback) {
 }
 
 function handleWin() {
-    document.getElementById('result').textContent = 'Selamat! Kamu menebak kode dengan benar!';
+    const resultElement = document.getElementById('result');
+    resultElement.textContent = 'Selamat! Kamu menebak kode dengan benar!';
+    resultElement.style.color = 'var(--feedback-green)';
+    
     const score = calculateScore(attempts);
     displayScore(score);
     showConfetti();
@@ -119,7 +134,9 @@ function handleWin() {
 }
 
 function handleLoss() {
-    document.getElementById('result').textContent = `Permainan berakhir! Kode rahasia adalah ${secretCode}.`;
+    const resultElement = document.getElementById('result');
+    resultElement.textContent = `Permainan berakhir! Kode rahasia adalah ${secretCode}.`;
+    resultElement.style.color = 'var(--feedback-red)';
     endGame();
 }
 
@@ -190,6 +207,7 @@ function showInfo(contentType) {
         content = `
             <h3>Perhitungan Skor</h3>
             <p>Poin = 100 - (Jumlah Tebakan - 1) × 20</p>
+            <p>Semakin sedikit tebakan, semakin tinggi skor!</p>
         `;
     }
 
@@ -209,21 +227,28 @@ function displayScore(score) {
     const scoreDisplay = document.getElementById('scoreDisplay');
     scoreDisplay.textContent = `Skor Kamu: ${score}`;
     scoreDisplay.style.display = 'block';
+    scoreDisplay.classList.add('show');
+    
     setTimeout(() => {
-        scoreDisplay.style.display = 'none';
+        scoreDisplay.classList.remove('show');
+        setTimeout(() => {
+            scoreDisplay.style.display = 'none';
+        }, 500);
     }, 5000);
 }
 
 function showConfetti() {
     const confettiContainer = document.getElementById('confetti');
     confettiContainer.style.display = 'block';
+    
     for (let i = 0; i < 100; i++) {
         const confettiPiece = document.createElement('div');
         confettiPiece.className = 'confetti-piece';
         confettiPiece.style.left = `${Math.random() * 100}vw`;
-        confettiPiece.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+        confettiPiece.style.backgroundColor = `hsl(${Math.random() * 360}, 80%, 60%)`;
         confettiContainer.appendChild(confettiPiece);
     }
+    
     setTimeout(() => {
         confettiContainer.innerHTML = '';
         confettiContainer.style.display = 'none';
