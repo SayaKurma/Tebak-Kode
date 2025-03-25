@@ -14,26 +14,26 @@ function initializeGame() {
 }
 
 function setupEventListeners() {
-    document.getElementById('submitGuess').addEventListener('click', handleGuess);
-    document.getElementById('restart').addEventListener('click', restartGame);
-    document.getElementById('infoIcon').addEventListener('click', openModal);
-    document.getElementById('closeModal').addEventListener('click', closeModal);
-    
+    const submitButton = document.getElementById('submitGuess');
+    const restartButton = document.getElementById('restart');
+    const infoIcon = document.getElementById('infoIcon');
+    const closeModalButton = document.getElementById('closeModal');
     const menuItems = document.querySelectorAll('.menu-item');
-    menuItems.forEach(item => {
-        item.addEventListener('click', handleInfoMenu);
-    });
+
+    if (submitButton) submitButton.addEventListener('click', handleGuess);
+    if (restartButton) restartButton.addEventListener('click', restartGame);
+    if (infoIcon) infoIcon.addEventListener('click', openModal);
+    if (closeModalButton) closeModalButton.addEventListener('click', closeModal);
+
+    menuItems.forEach(item => item.addEventListener('click', handleInfoMenu));
 
     window.addEventListener('click', (event) => {
-        const modal = document.getElementById('infoModal');
-        if (event.target === modal) {
-            closeModal();
-        }
+        if (event.target === document.getElementById('infoModal')) closeModal();
     });
 }
 
 function generateSecretCode() {
-    return Array.from({length: 5}, () => Math.floor(Math.random() * 10)).join('');
+    return Array.from({ length: 5 }, () => Math.floor(Math.random() * 10)).join('');
 }
 
 function handleGuess() {
@@ -94,8 +94,8 @@ function generateFeedback(guess) {
 function displayGuess(guess, feedback) {
     const guessesDiv = document.getElementById('guesses');
     const guessDiv = document.createElement('div');
-
     const guessText = document.createElement('span');
+
     guessText.textContent = guess;
     guessDiv.appendChild(guessText);
 
@@ -111,42 +111,46 @@ function displayGuess(guess, feedback) {
 }
 
 function handleWin() {
-    const resultDiv = document.getElementById('result');
-    const scoreDiv = document.getElementById('score');
-    
-    resultDiv.textContent = 'Selamat! Kamu menebak kode dengan benar!';
-    scoreDiv.textContent = `Skor Kamu: ${calculateScore(attempts)}`;
-    
-    endGame(true);
+    document.getElementById('result').textContent = 'Selamat! Kamu menebak kode dengan benar!';
+    document.getElementById('score').textContent = `Skor Kamu: ${calculateScore(attempts)}`;
+    endGame();
 }
 
 function handleLoss() {
-    const resultDiv = document.getElementById('result');
-    resultDiv.textContent = `Permainan berakhir! Kode rahasia adalah ${secretCode}.`;
-    
-    endGame(false);
+    document.getElementById('result').textContent = `Permainan berakhir! Kode rahasia adalah ${secretCode}.`;
+    endGame();
 }
 
 function calculateScore(attempts) {
     return Math.max(0, 100 - (attempts - 1) * 20);
 }
 
-function endGame(isWin) {
+function endGame() {
     document.getElementById('submitGuess').disabled = true;
     document.getElementById('restart').style.display = 'block';
 }
 
 function restartGame() {
-    initializeGame();
-    document.getElementById('submitGuess').disabled = false;
-    document.getElementById('restart').style.display = 'none';
+    secretCode = generateSecretCode();
+    attempts = 0;
+
+    document.getElementById('guesses').innerHTML = '';
     document.getElementById('result').textContent = '';
     document.getElementById('score').textContent = '';
+
+    document.getElementById('submitGuess').disabled = false;
+    document.getElementById('restart').style.display = 'none';
 }
 
 function openModal() {
     document.getElementById('infoModal').style.display = 'block';
-    document.querySelector('.menu-item[data-content="deskripsi"]').classList.add('active');
+    const deskripsiItem = document.querySelector('.menu-item[data-content="deskripsi"]');
+    
+    if (deskripsiItem) {
+        document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
+        deskripsiItem.classList.add('active');
+    }
+    
     showInfo('deskripsi');
 }
 
@@ -155,44 +159,47 @@ function closeModal() {
 }
 
 function handleInfoMenu(event) {
-    const menuItems = document.querySelectorAll('.menu-item');
-    menuItems.forEach(item => item.classList.remove('active'));
+    document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
     event.target.classList.add('active');
-
-    const contentType = event.target.getAttribute('data-content');
-    showInfo(contentType);
+    showInfo(event.target.getAttribute('data-content'));
 }
 
 function showInfo(contentType) {
     const infoContent = document.getElementById('infoContent');
     let content = '';
 
-    switch (contentType) {
-        case 'deskripsi':
-            content = `
-                <h3>Deskripsi Permainan</h3>
-                <p>Tebak Kode adalah permainan logika yang menantang. Tugasmu adalah menebak kombinasi 5 digit rahasia dalam 5 kesempatan. Gunakan petunjuk warna untuk mendekati kode yang benar!</p>
-            `;
-            break;
-        case 'aturan':
-            content = `
-                <h3>Aturan Permainan</h3>
-                <ul>
-                    <li>Kamu punya 5 kesempatan untuk menebak kode 5 digit</li>
-                    <li>Petunjuk warna akan membantu:</li>
-                    <li>🟢 Hijau: Angka benar dan posisi tepat</li>
-                    <li>🟡 Kuning: Angka benar tapi posisi salah</li>
-                    <li>🔴 Merah: Angka tidak ada dalam kode</li>
-                </ul>
-            `;
-            break;
-        case 'skor':
-            content = `
-                <h3>Perhitungan Skor</h3>
-                <p>Poin = 100 - (Jumlah Tebakan - 1) × 20</p>
-            `;
-            break;
+    if (contentType === 'deskripsi') {
+        content = `
+            <h3>Deskripsi Permainan</h3>
+            <p>Tebak Kode adalah permainan logika yang menantang. Tugasmu adalah menebak kombinasi 5 digit rahasia dalam 5 kesempatan. Gunakan petunjuk warna untuk mendekati kode yang benar!</p>
+        `;
+    } else if (contentType === 'aturan') {
+        content = `
+            <h3>Aturan Permainan</h3>
+            <ul>
+                <li>Kamu punya 5 kesempatan untuk menebak kode 5 digit</li>
+                <li>Petunjuk warna akan membantu:</li>
+                <li>🟢 Hijau: Angka benar dan posisi tepat</li>
+                <li>🟡 Kuning: Angka benar tapi posisi salah</li>
+                <li>🔴 Merah: Angka tidak ada dalam kode</li>
+            </ul>
+        `;
+    } else if (contentType === 'skor') {
+        content = `
+            <h3>Perhitungan Skor</h3>
+            <p>Skor awal 100 poin. Setiap tebakan akan mengurangi 20 poin.</p>
+            <p>Contoh: 1 tebakan = 100 poin, 3 tebakan = 60 poin</p>
+        `;
     }
 
     infoContent.innerHTML = content;
+}
+
+function resetGameUI() {
+    document.getElementById('guessInput').value = '';
+    document.getElementById('guesses').innerHTML = '';
+    document.getElementById('result').textContent = '';
+    document.getElementById('score').textContent = '';
+    document.getElementById('submitGuess').disabled = false;
+    document.getElementById('restart').style.display = 'none';
 }
