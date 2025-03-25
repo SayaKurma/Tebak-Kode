@@ -225,8 +225,12 @@ function resetGameUI() {
 
 function displayScore(score) {
     const scoreDisplay = document.getElementById('scoreDisplay');
-    scoreDisplay.textContent = `Skor Kamu: ${score}`;
-    scoreDisplay.style.display = 'block';
+    scoreDisplay.innerHTML = `
+        <div class="score-circle">
+            <div class="score-text">${score}</div>
+        </div>
+    `;
+    scoreDisplay.style.display = 'flex';
     scoreDisplay.classList.add('show');
 
     setTimeout(() => {
