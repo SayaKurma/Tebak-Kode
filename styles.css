@@ -1,11 +1,12 @@
 :root {
-    --primary-color: #4A6CF7;
-    --secondary-color: #6B7AFF;
-    --background-color: #F4F7FF;
-    --text-color: #333;
-    --feedback-green: #4CAF50;
-    --feedback-yellow: #FFC107;
-    --feedback-red: #F44336;
+    --primary-color: #3B82F6;
+    --secondary-color: #60A5FA;
+    --background-color: #F0F9FF;
+    --text-color: #1F2937;
+    --feedback-green: #10B981;
+    --feedback-yellow: #FBBF24;
+    --feedback-red: #EF4444;
+    --modal-bg: rgba(55, 65, 81, 0.7);
 }
 
 * {
@@ -15,84 +16,107 @@
 }
 
 body {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Inter', sans-serif;
     background-color: var(--background-color);
     color: var(--text-color);
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    line-height: 1.6;
 }
 
 .game-container {
     background-color: white;
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(74, 108, 247, 0.15);
-    padding: 30px;
-    width: 350px;
+    border-radius: 20px;
+    box-shadow: 0 16px 40px rgba(59, 130, 246, 0.2);
+    padding: 35px;
+    width: 100%;
+    max-width: 400px;
     text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.game-container:hover {
+    transform: translateY(-5px);
 }
 
 .game-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
 }
 
 .game-header h1 {
     color: var(--primary-color);
-    font-size: 24px;
-    font-weight: 600;
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
 }
 
 .info-icon {
+    background: none;
+    border: none;
     cursor: pointer;
-    font-size: 24px;
-    transition: transform 0.3s;
+    color: var(--primary-color);
+    transition: transform 0.3s, color 0.3s;
 }
 
 .info-icon:hover {
-    transform: scale(1.2);
+    transform: scale(1.1);
+    color: var(--secondary-color);
 }
 
 .game-description {
-    margin-bottom: 20px;
-    color: #666;
+    margin-bottom: 25px;
+    color: #6B7280;
+    font-size: 14px;
 }
 
 .input-section {
     display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
+    gap: 15px;
+    margin-bottom: 25px;
 }
 
 #guessInput {
     flex-grow: 1;
-    padding: 10px;
-    border: 2px solid var(--secondary-color);
-    border-radius: 8px;
+    padding: 12px 15px;
+    border: 2px solid var(--primary-color);
+    border-radius: 12px;
     font-size: 16px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+#guessInput:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2);
 }
 
 .btn-guess, .btn-restart {
     background-color: var(--primary-color);
     color: white;
     border: none;
-    border-radius: 8px;
-    padding: 10px 15px;
+    border-radius: 12px;
+    padding: 12px 20px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    font-weight: 600;
+    transition: background-color 0.3s, transform 0.3s;
 }
 
 .btn-guess:hover, .btn-restart:hover {
     background-color: var(--secondary-color);
+    transform: scale(1.05);
 }
 
 .guess-history {
-    margin-bottom: 20px;
-    max-height: 200px;
+    margin-bottom: 25px;
+    max-height: 250px;
     overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-color) transparent;
 }
 
 .guess-history > div {
@@ -101,13 +125,16 @@ body {
     align-items: center;
     margin-bottom: 10px;
     font-size: 18px;
+    background-color: #F3F4F6;
+    padding: 10px;
+    border-radius: 8px;
 }
 
 .feedback {
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    margin-left: 5px;
+    margin-left: 10px;
 }
 
 .modal {
@@ -118,29 +145,47 @@ body {
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: var(--modal-bg);
+    backdrop-filter: blur(5px);
     overflow: auto;
 }
 
 .modal-content {
     background-color: white;
     margin: 10% auto;
-    width: 80%;
+    width: 90%;
     max-width: 500px;
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+    position: relative;
 }
 
 .modal-header {
     background-color: var(--primary-color);
     color: white;
-    padding: 15px;
-    border-top-left-radius: 16px;
-    border-top-right-radius: 16px;
+    padding: 20px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
 }
 
 .modal-header h2 {
     text-align: center;
+    font-size: 20px;
+}
+
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.close-btn:hover {
+    transform: rotate(90deg);
 }
 
 .modal-menu ul {
@@ -148,7 +193,7 @@ body {
     justify-content: center;
     list-style: none;
     padding: 15px 0;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #E5E7EB;
 }
 
 .modal-menu a {
@@ -157,6 +202,15 @@ body {
     margin: 0 15px;
     font-weight: 500;
     position: relative;
+    transition: color 0.3s;
+}
+
+.modal-menu a:hover {
+    color: var(--primary-color);
+}
+
+.modal-menu a.active {
+    color: var(--primary-color);
 }
 
 .modal-menu a.active::after {
@@ -170,34 +224,28 @@ body {
 }
 
 .info-content {
-    padding: 20px;
-}
-
-.close {
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    color: white;
-    cursor: pointer;
-    padding: 0 15px;
-}
-
-.close:hover {
-    color: #ddd;
+    padding: 25px;
 }
 
 .score-display {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) scale(0.7);
     font-size: 3em;
-    color: #fff;
-    background-color: rgba(0, 0, 0, 0.8);
-    padding: 20px;
-    border-radius: 10px;
+    color: white;
+    background-color: var(--primary-color);
+    padding: 30px 50px;
+    border-radius: 20px;
     text-align: center;
     display: none;
+    opacity: 0;
+    transition: transform 0.5s, opacity 0.5s;
+}
+
+.score-display.show {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
 }
 
 .confetti {
@@ -215,11 +263,39 @@ body {
     position: absolute;
     width: 10px;
     height: 10px;
-    background-color: #f00;
-    animation: confetti-fall 2s linear infinite;
+    border-radius: 50%;
+    animation: confetti-fall 2s cubic-bezier(0.25, 0.1, 0.25, 1) infinite;
 }
 
 @keyframes confetti-fall {
-    0% { transform: translateY(0) rotate(0); }
-    100% { transform: translateY(100vh) rotate(360deg); }
+    0% { 
+        transform: translateY(0) rotate(0); 
+        opacity: 1;
+    }
+    100% { 
+        transform: translateY(100vh) rotate(360deg); 
+        opacity: 0;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .game-container {
+        width: 95%;
+        margin: 0 10px;
+        padding: 25px;
+    }
+
+    .input-section {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .modal-menu ul {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .modal-menu a {
+        margin: 10px 0;
+    }
 }
