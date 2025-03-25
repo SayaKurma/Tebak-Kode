@@ -187,7 +187,7 @@ function showInfo(contentType) {
     } else if (contentType === 'skor') {
         content = `
             <h3>Perhitungan Skor</h3>
-            <p>Poin = 100 - (Jumlah Tebakan - 1) * 20</p>
+            <p>Poin = 100 - (Jumlah Tebakan - 1) × 20</p>
         `;
     }
 
