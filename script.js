@@ -187,8 +187,7 @@ function showInfo(contentType) {
     } else if (contentType === 'skor') {
         content = `
             <h3>Perhitungan Skor</h3>
-            <p>Skor awal 100 poin. Setiap tebakan akan mengurangi 20 poin.</p>
-            <p>Contoh: 1 tebakan = 100 poin, 3 tebakan = 60 poin</p>
+            <p>Poin = 100 - (Jumlah Tebakan - 1) * 20</p>
         `;
     }
 
