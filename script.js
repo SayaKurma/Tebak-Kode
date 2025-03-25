@@ -24,7 +24,6 @@ function setupEventListeners() {
         item.addEventListener('click', handleInfoMenu);
     });
 
-    // Close modal when clicking outside
     window.addEventListener('click', (event) => {
         const modal = document.getElementById('infoModal');
         if (event.target === modal) {
