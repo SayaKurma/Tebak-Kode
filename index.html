@@ -18,25 +18,17 @@
         <button id="restart" style="display: none;">Main Lagi</button>
     </div>
 
+    <!-- Modal untuk deskripsi permainan -->
     <div id="infoModal" class="modal">
         <div class="modal-content">
             <span class="close" id="closeModal">&times;</span>
-            <h2>Deskripsi Permainan</h2>
-            <p>Tebak Kode adalah permainan logika dan deduksi di mana pemain harus menebak kombinasi angka rahasia yang terdiri dari 5 digit acak (0-9). Angka dalam kode dapat berulang, sehingga pemain perlu memperhatikan setiap tebakan dengan cermat.</p>
-            <h3>Aturan Permainan:</h3>
+            <h2>Informasi Permainan</h2>
             <ul>
-                <li>Pemain diberikan 5 kesempatan untuk menebak kode yang benar.</li>
-                <li>Setiap tebakan akan diberikan umpan balik dengan sistem warna:</li>
-                <ul>
-                    <li>Hijau: Angka tersebut ada dalam kode dan posisinya sudah benar.</li>
-                    <li>Kuning: Angka tersebut ada dalam kode, tetapi posisinya salah.</li>
-                    <li>Merah: Angka tersebut tidak ada dalam kode.</li>
-                </ul>
-                <li>Pemain menggunakan informasi dari warna umpan balik untuk menyusun strategi di tebakan berikutnya.</li>
-                <li>Jika dalam 5 kali tebakan pemain belum berhasil menebak kode yang benar, permainan berakhir.</li>
+                <li><a href="#" class="menu-item" data-content="deskripsi">Deskripsi Permainan</a></li>
+                <li><a href="#" class="menu-item" data-content="aturan">Aturan Permainan</a></li>
+                <li><a href="#" class="menu-item" data-content="skor">Perhitungan Skor</a></li>
             </ul>
-            <h3>Rumus Perhitungan Skor:</h3>
-            <p>Poin = 100 - (Jumlah Tebakan - 1) × 20</p>
+            <div id="infoContent" class="info-content"></div>
         </div>
     </div>
 
