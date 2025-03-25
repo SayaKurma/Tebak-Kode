@@ -5,7 +5,10 @@ const maxAttempts = 5;
 document.getElementById('submitGuess').addEventListener('click', makeGuess);
 document.getElementById('restart').addEventListener('click', restartGame);
 document.getElementById('infoIcon').addEventListener('click', openModal);
-document.getElementById('closeModal').addEventListener ('click', closeModal);
+document.getElementById('closeModal').addEventListener('click', closeModal);
+document.querySelectorAll('.menu-item').forEach(item => {
+    item.addEventListener('click', showInfo);
+});
 
 function generateSecretCode() {
     let code = '';
@@ -108,11 +111,44 @@ function openModal() {
 
 function closeModal() {
     document.getElementById('infoModal').style.display = 'none';
+    document.getElementById('infoContent').innerHTML = ''; 
+}
+
+function showInfo(event) {
+    const contentType = event.target.getAttribute('data-content');
+    let content = '';
+
+    switch (contentType) {
+        case 'deskripsi':
+            content = `<h3>Deskripsi Permainan</h3>
+                       <p>Tebak Kode adalah permainan logika dan deduksi di mana pemain harus menebak kombinasi angka rahasia yang terdiri dari 5 digit acak (0-9). Angka dalam kode dapat berulang, sehingga pemain perlu memperhatikan setiap tebakan dengan cermat.</p>`;
+            break;
+        case 'aturan':
+            content = `<h3>Aturan Permainan</h3>
+                       <ul>
+                           <li>Pemain diberikan 5 kesempatan untuk menebak kode yang benar.</li>
+                           <li>Setiap tebakan akan diberikan umpan balik dengan sistem warna:</li>
+                           <ul>
+                               <li>Hijau: Angka tersebut ada dalam kode dan posisinya sudah benar.</li>
+                               <li>Kuning: Angka tersebut ada dalam kode, tetapi posisinya salah.</li>
+                               <li>Merah: Angka tersebut tidak ada dalam kode.</li>
+                           </ul>
+                           <li>Pemain menggunakan informasi dari warna umpan balik untuk menyusun strategi di tebakan berikutnya.</li>
+                           <li>Jika dalam 5 kali tebakan pemain belum berhasil menebak kode yang benar, permainan berakhir.</li>
+                       </ul>`;
+            break;
+        case 'skor':
+            content = `<h3>Rumus Perhitungan Skor</h3>
+                       <p>Poin = 100 - (Jumlah Tebakan - 1) × 20</p>`;
+            break;
+    }
+
+    document.getElementById('infoContent').innerHTML = content;
 }
 
 window.onclick = function(event) {
     const modal = document.getElementById('infoModal');
     if (event.target === modal) {
-        modal.style.display = 'none';
+        closeModal();
     }
 }
