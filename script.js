@@ -126,7 +126,7 @@ function handleWin() {
     const resultElement = document.getElementById('result');
     resultElement.textContent = 'Selamat! Kamu menebak kode dengan benar!';
     resultElement.style.color = 'var(--feedback-green)';
-    
+
     const score = calculateScore(attempts);
     displayScore(score);
     showConfetti();
@@ -164,12 +164,12 @@ function restartGame() {
 function openModal() {
     document.getElementById('infoModal').style.display = 'block';
     const deskripsiItem = document.querySelector('.menu-item[data-content="deskripsi"]');
-    
+
     if (deskripsiItem) {
         document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
         deskripsiItem.classList.add('active');
     }
-    
+
     showInfo('deskripsi');
 }
 
@@ -228,7 +228,7 @@ function displayScore(score) {
     scoreDisplay.textContent = `Skor Kamu: ${score}`;
     scoreDisplay.style.display = 'block';
     scoreDisplay.classList.add('show');
-    
+
     setTimeout(() => {
         scoreDisplay.classList.remove('show');
         setTimeout(() => {
@@ -240,17 +240,23 @@ function displayScore(score) {
 function showConfetti() {
     const confettiContainer = document.getElementById('confetti');
     confettiContainer.style.display = 'block';
-    
-    for (let i = 0; i < 100; i++) {
-        const confettiPiece = document.createElement('div');
-        confettiPiece.className = 'confetti-piece';
-        confettiPiece.style.left = `${Math.random() * 100}vw`;
-        confettiPiece.style.backgroundColor = `hsl(${Math.random() * 360}, 80%, 60%)`;
-        confettiContainer.appendChild(confettiPiece);
-    }
-    
+
+    const popper = document.createElement('div');
+    popper.className = 'party-popper';
+    popper.style.position = 'absolute';
+    popper.style.left = '50%';
+    popper.style.bottom = '0';
+    popper.style.transform = 'translateX(-50%)';
+    popper.innerHTML = `
+        <div class="popper-body"></div>
+        <div class="popper-confetti"></div>
+    `;
+    confettiContainer.appendChild(popper);
+
     setTimeout(() => {
-        confettiContainer.innerHTML = '';
-        confettiContainer.style.display = 'none';
-    }, 5000);
+        popper.classList.add('pop');
+        setTimeout(() => {
+            confettiContainer.removeChild(popper);
+        }, 1000);
+    }, 100);
 }
