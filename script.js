@@ -226,8 +226,11 @@ function resetGameUI() {
 function displayScore(score) {
     const scoreDisplay = document.getElementById('scoreDisplay');
     scoreDisplay.innerHTML = `
-        <div class="score-circle">
-            <div class="score-text">${score}</div>
+        <div class="score-wrapper">
+            <div class="score-circle">
+                <div class="score-text">${score}</div>
+            </div>
+            <div class="score-subtitle">Skor Hebat!</div>
         </div>
     `;
     scoreDisplay.style.display = 'flex';
@@ -241,26 +244,35 @@ function displayScore(score) {
     }, 5000);
 }
 
+function createConfetti() {
+    const confettiContainer = document.getElementById('confetti');
+    confettiContainer.innerHTML = ''; 
+    const colors = ['#3B82F6', '#10B981', '#F43F5E', '#8B5CF6', '#F59E0B'];
+
+    for (let i = 0; i < 100; i++) {
+        const confettiPiece = document.createElement('div');
+        confettiPiece.classList.add('confetti-piece');
+        
+        confettiPiece.style.left = `${Math.random() * 100}%`;
+        confettiPiece.style.animationDelay = `${Math.random() * 3}s`;
+        
+        confettiPiece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        
+        confettiPiece.style.transform = `rotate(${Math.random() * 360}deg)`;
+        const size = Math.random() * 10 + 5;
+        confettiPiece.style.width = `${size}px`;
+        confettiPiece.style.height = `${size}px`;
+        
+        confettiContainer.appendChild(confettiPiece);
+    }
+}
+
 function showConfetti() {
     const confettiContainer = document.getElementById('confetti');
     confettiContainer.style.display = 'block';
-
-    const popper = document.createElement('div');
-    popper.className = 'party-popper';
-    popper.style.position = 'absolute';
-    popper.style.left = '50%';
-    popper.style.bottom = '0';
-    popper.style.transform = 'translateX(-50%)';
-    popper.innerHTML = `
-        <div class="popper-body"></div>
-        <div class="popper-confetti"></div>
-    `;
-    confettiContainer.appendChild(popper);
+    createConfetti();
 
     setTimeout(() => {
-        popper.classList.add('pop');
-        setTimeout(() => {
-            confettiContainer.removeChild(popper);
-        }, 1000);
-    }, 100);
+        confettiContainer.style.display = 'none';
+    }, 3000);
 }
